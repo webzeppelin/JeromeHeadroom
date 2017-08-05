@@ -1,5 +1,5 @@
 import React from "react";
-// import "../stylesheets/main.scss";
+import "../stylesheets/main.scss";
 import { connect } from "react-redux";
 import { Row, Col, Nav, NavItem, PageHeader, Panel } from "react-bootstrap";
 
@@ -13,14 +13,8 @@ export class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <PageHeader>Jerome Headroom</PageHeader>
-        <Nav bsStyle="pills">
-          <NavItem eventKey="home" href="/">Home</NavItem>
-          <NavItem eventKey="test" href="/test">Test</NavItem>
-        </Nav>
-        <Panel>
-          {this.props.children}
-        </Panel>
+        <PageHeader>JEROME HEADROOM</PageHeader>
+        {this.props.children}
       </div>
           );
   }
