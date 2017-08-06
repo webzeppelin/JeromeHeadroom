@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { browserHistory } from "react-router";
+import { createBrowserHistory } from 'history';
 import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
 import createSagaMiddleware from "redux-saga";
 import freeze from "redux-freeze";
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV !== 'production' && window.devToolsExtension) {
 
 // create the store
 const store = createStore(reducers, middleware);
-const history = syncHistoryWithStore(browserHistory, store);
+const history = browserHistory ? syncHistoryWithStore(browserHistory, store) : syncHistoryWithStore(createBrowserHistory(), store);
 // store.subscribe(() => {
 // console.log("Store updated");
 // console.log(store.getState());

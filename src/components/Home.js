@@ -15,12 +15,14 @@ export class Home extends React.Component {
       <div>
         <Row>
           <Col xs={12} md={6}>
-            <FormGroup controlId="formControlsTextarea">
-              <FormControl componentClass="textarea" placeholder="Say something to Jerome..." />
-              <Button bsStyle="primary">SEND <Glyphicon glyph="play"/></Button>
+            <FormGroup controlId="enterForm">
+              <FormControl componentClass="textarea" placeholder="Say something to Jerome..." rows={4}/>
+              <div className="ra-button-bar">
+                <Button>SPEAK <Glyphicon glyph="bullhorn"/></Button><Button>CLEAR <Glyphicon glyph="remove"/></Button><Button bsStyle="primary">SEND <Glyphicon glyph="play"/></Button>
+              </div>
             </FormGroup>
-            <FormGroup controlId="formControlsTextarea">
-              <ControlLabel>Your Conversation...</ControlLabel>
+            <FormGroup controlId="transcript">
+              <ControlLabel>CONVERSATION:</ControlLabel>
               <FormControl componentClass="textarea" readOnly placeholder="Say something to Jerome to begin..." rows={8} />
             </FormGroup>
           </Col>

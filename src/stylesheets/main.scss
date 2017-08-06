@@ -1,5 +1,20 @@
 $font-stack: "Century Gothic",CenturyGothic,AppleGothic,sans-serif;
+$top-marg: 10px;
+$bottom-marg: 10px;
+$left-marg: 5px;
+$right-marg: 5px;
 
 body {
   font: 150% $font-stack;
+}
+
+.btn {
+  margin-top: $top-marg;
+  margin-bottom: $bottom-marg;
+  margin-left: $left-marg;
+  margin-right: $right-marg;
+}
+
+.ra-button-bar {
+  text-align: right;
 }
