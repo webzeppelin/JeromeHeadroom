@@ -17,11 +17,12 @@ export class UserInputForm extends React.Component {
     const { inputText, waitingForResponse, waitingForSpeech} = this.props;
     return (
       <FormGroup controlId="enterForm">
-        <FormControl componentClass="textarea" placeholder="Say something to Jerome..." rows={4} value={inputText} onChange={this.handleInputChange} inputRef={(ref) => { this.inputText = ref }} />
+        <ControlLabel>INPUT:</ControlLabel>
+        <FormControl componentClass="textarea" placeholder="Say something to Jerome..." rows={4} value={inputText} disabled={ waitingForResponse || waitingForSpeech } onChange={this.handleInputChange} inputRef={(ref) => { this.inputText = ref }} />
         <div className="ra-button-bar">
-          <Button onClick={this.handleInputSpeak}>SPEAK <Glyphicon glyph="bullhorn" /></Button>
-          <Button onClick={this.handleInputClear}>CLEAR <Glyphicon glyph="remove" /></Button>
-          <Button bsStyle="primary" onClick={this.handleInputSend}>SEND <Glyphicon glyph="play" /></Button>
+          <Button onClick={this.handleInputSpeak} disabled={waitingForSpeech}>SPEAK <Glyphicon glyph="bullhorn" /></Button>
+          <Button onClick={this.handleInputClear} disabled={!inputText}>CLEAR <Glyphicon glyph="remove" /></Button>
+          <Button bsStyle="primary" onClick={this.handleInputSend} disabled={waitingForResponse}>SEND <Glyphicon glyph="play" /></Button>
         </div>
       </FormGroup>
     );
@@ -54,7 +55,7 @@ function mapStateToProps(state) {
   return {
     inputText: state.userInputForm.inputText,
     waitingForSpeech: state.userInputForm.waitingForSpeech,
-    waitingForResponse: state.userInputForm.waitingForResponse,
+    waitingForResponse: state.response.waitingForResponse,
   };
 }
 

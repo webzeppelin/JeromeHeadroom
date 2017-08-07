@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { Button, Table } from "react-bootstrap";
 
-// Home page component
-export class Test extends React.Component {
+export class TestContainer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -37,10 +36,9 @@ export class Test extends React.Component {
     
 }
 
-// export the connected class
 function mapStateToProps(state) {
     return {
         prop1: state.test.state1,
     };
 }
-export default connect(mapStateToProps)(Test);
+export default connect(mapStateToProps)(TestContainer);

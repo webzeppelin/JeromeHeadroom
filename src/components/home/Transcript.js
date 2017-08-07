@@ -8,14 +8,28 @@ export class Transcript extends React.Component {
     }
 
     render() {
+        const { entries } = this.props;
+        let value = this.buildValue(entries);
         return (
             <FormGroup controlId="transcript">
               <ControlLabel>TRANSCRIPT:</ControlLabel>
-              <FormControl componentClass="textarea" readOnly placeholder="Say something to Jerome above to begin..." rows={8} />
+              <FormControl componentClass="textarea" readOnly value={value} placeholder="Say something to Jerome above to begin..." rows={8} />
               <FormControl.Feedback />
             </FormGroup>
         );
     }
+
+    buildValue(entries) {
+        let map = entries.map((entry, index) => {
+            return entry.speaker + ": " + entry.text;
+        });
+        return map.join('\n');
+    }
 }
 
-export default Transcript = connect()(Transcript);
+function mapStateToProps(state) {
+  return {
+    entries: state.transcript.entries,
+  };
+}
+export default Transcript = connect(mapStateToProps)(Transcript);
