@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Row, Col, FormGroup, FormControl, Button, Glyphicon, Image, ControlLabel } from "react-bootstrap";
-import { sendInput, requestSpeech } from "../../action";
+import { Row, Col } from "react-bootstrap";
 import { UserInputForm } from "./UserInputForm";
 import { Transcript } from "./Transcript";
 import { TalkingHead } from "./TalkingHead";
