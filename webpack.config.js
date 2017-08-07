@@ -39,7 +39,7 @@ module.exports = {
     contentBase: __dirname + '/public',
   },
   plugins: [
-    new CleanWebpackPlugin(['css/main.css', 'js/bundle.js'], {
+    new CleanWebpackPlugin(['css/main.css', 'js/jerome-headroom.bundle.js'], {
       root: path.resolve(__dirname, '/public'),
       verbose: true,
       dry: false, // true for simulation

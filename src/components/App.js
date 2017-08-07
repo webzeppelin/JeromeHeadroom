@@ -16,7 +16,6 @@ export class App extends React.Component {
       <div className="container">
         <PageHeader>JEROME HEADROOM</PageHeader>
         { app_router }
-        {/* {this.props.children} */}
       </div>
           );
   }
