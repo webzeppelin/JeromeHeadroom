@@ -1,0 +1,138 @@
+<html>
+
+<head>
+<meta title="jeromeHeadroom">
+<style>
+
+a, div, p, li, span {
+	font-family: monospace;
+}
+#maxWrap {
+	text-align: center;
+	margin:0 auto 0 auto;
+	width:320px;
+	background-color:#000;
+}
+.max-button {
+	display:inline-block;
+	border:.2em solid #FF0000;
+	border-radius: .5em;
+	font-size:2em;
+	margin: .5em;
+	background-color: #33CC33;
+}
+.max-button a { 
+	text-decoration: none;
+	padding:1em;
+	line-height:2em;
+}
+.max-button a:link, .max-button a:visted, .max-button a:hover, .max-button a:active {
+	cursor: pointer;
+}
+.max-button a:hover {
+	color:#FF3;
+}
+.max-button a:active {
+	color:#F33;
+}
+
+.max-result {
+	width:320px;
+	padding:.5em 0;
+	margin:0 auto .5em auto;
+	font-size:2em;
+	line-height:1.5em;
+	background-color: YELLOW;
+}
+
+.maxpic {
+	width:320px;
+	height:320px;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+
+
+
+<script>
+jQuery(document).ready(function($) {
+	
+	//$('#max').attr("src","jerome-closed.png");
+
+	$('#open-it').on({
+	    'click': function() {
+	    	event.preventDefault();
+	        var src = ($('#max').attr('src') === 'jerome-closed.png') ? 'jerome-open.png': 'jerome-closed.png';
+	        $('#max').attr('src', src);
+	    }
+	});
+
+	$('#talk-now').on({
+	    'click': function(event) {
+	    	event.preventDefault();
+	        recognition.start();
+	    }
+	});
+});
+
+var recognition = new webkitSpeechRecognition();
+//recognition.continuous = true;
+//recognition.interimResults = true;
+
+recognition.onresult = function(event) {
+
+//console.log(event);
+  
+var response = event.results[0][0].transcript;
+  
+//console.log(response);
+
+maxSaysText = document.getElementById("result");
+
+maxSaysText.innerHTML = response;
+
+var u = new SpeechSynthesisUtterance();
+var words = maxSaysText.innerHTML.split(' ');
+var a = 0;
+u.text = maxSaysText.innerHTML;
+u.lang = 'en-US';
+u.rate = .98;
+
+u.onboundary = function(event) {
+//console.log(words);
+maxSaysText.innerHTML = maxSaysText.innerHTML.replace(/<\/?strong>/g, "");
+maxSaysText.innerHTML = maxSaysText.innerHTML.replace(words[a], '<strong>' + words[a] + '</strong>');
+a++;       
+}
+
+speechSynthesis.speak(u);
+
+//setTimeout(function, 250) getting ready to open and close by the index and an interval
+
+
+//window.speechSynthesis.speak(new SpeechSynthesisUtterance(response));
+
+
+}
+
+</script>
+
+<div id="maxWrap">
+
+	<div id="talk-now" class="max-button"><a href="#">You Speak</a></div>
+	<div id="open-it" class="max-button"><a href="#">Mouth It</a></div>
+
+	<img id="max" class="maxpic" src="jerome-closed.png">
+
+	<div id="result" class="max-result">Jerome Speaks?</div>
+
+</div>
+
+</body>
+</html>
