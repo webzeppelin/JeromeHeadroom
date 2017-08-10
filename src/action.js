@@ -3,6 +3,9 @@ export const SET_INPUT = "SET_INPUT";
 export const RECEIVE_RESPONSE = "RECEIVE_RESPONSE";
 export const REQUEST_SPEECH = "REQUEST_SPEECH";
 export const RECEIVE_SPEECH = "RECEIVE_SPEECH";
+export const SPEAK_RESPONSE = "SPEAK_RESPONSE";
+export const NOTIFY_WORD_SPOKEN = "NOTIFY_WORD_SPOKEN";
+export const SPEAK_RESPONSE_COMPLETE = "SPEAK_RESPONSE_COMPLETE";
 
 export function sendInput(input) {
     return {
@@ -36,4 +39,23 @@ export function receiveSpeech(speech) {
         type: RECEIVE_SPEECH,
         text: speech,
     };
+}
+
+export function speakResponse(response) {
+    return {
+        type: SPEAK_RESPONSE,
+        text: response,
+    }
+}
+
+export function notifyWordSpoken() {
+    return {
+        type: NOTIFY_WORD_SPOKEN,
+    }
+}
+
+export function speakResponseComplete() {
+    return {
+        type: SPEAK_RESPONSE_COMPLETE,
+    }
 }

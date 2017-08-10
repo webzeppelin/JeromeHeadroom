@@ -4,6 +4,17 @@ import { connect } from "react-redux";
 // import { Rect } from "react-retina";
 import { Layer, Rect, Line, Stage, Group, Image } from 'react-konva';
 
+const cube = [
+  [-500, -500, -500],
+  [500, -500, -500],
+  [500, 500, -500],
+  [-500, 500, -500],
+  [-500, -500, 500],
+  [500, -500, 500],
+  [500, 500, 500],
+  [-500, 500, 500]
+];
+
 export class TestSurface extends React.Component {
   constructor(props) {
     super(props);
@@ -16,14 +27,13 @@ export class TestSurface extends React.Component {
   componentDidMount() {
     console.log("Preloading frame image");
     var img = document.createElement("img");
-    img.src = "/media/jerome_headroom_trans.png";
+    img.src = "/media/jerome-open-trans.png";
     img.onload = () => {
       console.log("image onload called");
       this.setState({frameLoaded: true});
     };
     this.setState({
       frame: img,
-      frameLoaded: false,
     });
   }
 
@@ -68,9 +78,7 @@ export class TestSurface extends React.Component {
       );
     }
   }
-
-  frameLoaded
-
+  
   generateLines(width, height, numdivs) {
     let ret = [];
     let spacing = height / numdivs;
@@ -80,6 +88,18 @@ export class TestSurface extends React.Component {
       ret.push([0, y, width - 1, y])
     }
     return ret;
+  }
+
+  project3DPointToPlane(point, planePoint, planeNormal) {
+    let t = (planeNormal[0]*planePoint[0] - planeNormal[0]*point[0]
+      + planeNormal[1]*planePoint[1] - planeNormal[1]*point[1]
+      + planeNormal[2]*planePoint[2] - planeNormal[2]*point[2])
+      / (planeNormal[0]*planeNormal[0] + planeNormal[1]*planeNormal[1] + planeNormal[2]*planeNormal[2]);
+    return [
+      point[0] + t*planeNormal[0],
+      point[1] + t*planeNormal[1],
+      point[2] + t*planeNormal[2],
+    ];
   }
 }
 
