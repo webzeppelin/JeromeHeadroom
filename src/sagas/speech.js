@@ -30,7 +30,10 @@ function createTextToSpeechChannel(utter) {
   return eventChannel(emit => {
 
     const onBoundaryHandler = (event) => {
-      emit(notifyWordSpoken());
+      if (event.name === "word") {
+        emit(notifyWordSpoken(event.charIndex));
+      }
+      
     }
 
     const onEndHandler = (event) => {

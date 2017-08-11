@@ -13,16 +13,28 @@ export class UserInputForm extends React.Component {
     this.handleInputSpeak = this.handleInputSpeak.bind(this);
   }
 
+  componentDidMount() {
+    this.focusToInput();
+  }
+
   render() {
-    const { inputText, waitingForResponse, waitingForSpeech} = this.props;
+    const { inputText, waitingForResponse, waitingForSpeech } = this.props;
     return (
       <FormGroup controlId="enterForm">
         <ControlLabel>INPUT:</ControlLabel>
-        <FormControl componentClass="textarea" placeholder="Say something to Jerome..." rows={4} value={inputText} disabled={ waitingForResponse || waitingForSpeech } onChange={this.handleInputChange} inputRef={(ref) => { this.inputText = ref }} />
+        <FormControl componentClass="textarea"
+          placeholder="Say something to Jerome..."
+          rows={4}
+          value={inputText}
+          disabled={waitingForResponse || waitingForSpeech}
+          onChange={this.handleInputChange}
+          inputRef={(ref) => { this.inputText = ref }}
+          onKeyPress={(event) => { if (event.key === "Enter" && event.target.value) { this.handleInputSend(event); } }}
+        />
         <div className="ra-button-bar">
           <Button onClick={this.handleInputSpeak} disabled={waitingForSpeech}>SPEAK <Glyphicon glyph="bullhorn" /></Button>
           <Button onClick={this.handleInputClear} disabled={!inputText}>CLEAR <Glyphicon glyph="remove" /></Button>
-          <Button bsStyle="primary" onClick={this.handleInputSend} disabled={waitingForResponse}>SEND <Glyphicon glyph="play" /></Button>
+          <Button bsStyle="primary" onClick={this.handleInputSend} disabled={!inputText || waitingForResponse}>SEND <Glyphicon glyph="play" /></Button>
         </div>
       </FormGroup>
     );
@@ -35,7 +47,6 @@ export class UserInputForm extends React.Component {
 
   handleInputSend(event) {
     const { inputText } = this.props;
-    console.log("Input text = " + inputText);
     this.props.dispatch(sendInput(inputText));
     this.props.dispatch(setInput(''));
   }
@@ -48,6 +59,12 @@ export class UserInputForm extends React.Component {
   handleInputSpeak(event) {
     console.log("Requesting speech");
     this.props.dispatch(requestSpeech());
+  }
+
+  focusToInput() {
+    if (this.inputText && this.inputText.focus instanceof Function) {
+      this.inputText.focus();
+    }
   }
 }
 

@@ -48,9 +48,10 @@ export function speakResponse(response) {
     }
 }
 
-export function notifyWordSpoken() {
+export function notifyWordSpoken(charIndex) {
     return {
         type: NOTIFY_WORD_SPOKEN,
+        charIndex: charIndex,
     }
 }
 

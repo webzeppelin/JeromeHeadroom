@@ -10,8 +10,8 @@ export function* sagas() {
     fork(takeLatest, REQUEST_SPEECH, requestSpeech),
     fork(takeLatest, SPEAK_RESPONSE, speakResponse),
     fork(takeLatest, RECEIVE_RESPONSE, receiveResponse),
-    fork(takeLatest, NOTIFY_WORD_SPOKEN, logAction),
-    fork(takeLatest, SPEAK_RESPONSE_COMPLETE, logAction),
+    // fork(takeLatest, NOTIFY_WORD_SPOKEN, logAction),
+    // fork(takeLatest, SPEAK_RESPONSE_COMPLETE, logAction),
   ];
 }
 

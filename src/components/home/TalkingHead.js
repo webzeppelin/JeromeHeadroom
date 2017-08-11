@@ -8,12 +8,21 @@ export class TalkingHead extends React.Component {
     }
 
     render() {
+        const { mouthOpen, isSpeaking } = this.props;
+        let img_src = mouthOpen ? "/media/jerome-open-trans.png" : "/media/jerome-closed-trans.png";
         return (
             <div>
-                <Image src="/media/jerome_headroom_placeholder.png" responsive />
+                <Image src={img_src} responsive />
             </div>
         );
     }
 }
 
-export default TalkingHead = connect()(TalkingHead);
+function mapStateToProps(state) {
+  return {
+    mouthOpen: state.talkingHead.mouthOpen,
+    isSpeaking: state.talkingHead.isSpeaking,
+  };
+}
+
+export default TalkingHead = connect(mapStateToProps)(TalkingHead);

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Panel } from "react-bootstrap";
 import { UserInputForm } from "./UserInputForm";
 import { Transcript } from "./Transcript";
 import { TalkingHead } from "./TalkingHead";
@@ -18,11 +18,13 @@ export class HomeContainer extends React.Component {
       <div>
         <Row>
           <Col xs={12} md={6}>
-            <TalkingHead />
+            <Panel>
+              <TalkingHead />
+              <ResponseText />
+            </Panel>
           </Col>
           <Col xs={12} md={6}>
             <UserInputForm />
-            <ResponseText />
             <Transcript />
           </Col>
         </Row>
