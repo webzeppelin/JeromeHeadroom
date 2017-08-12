@@ -1,8 +1,7 @@
-import { SET_INPUT, RECEIVE_RESPONSE, RECEIVE_SPEECH } from "../action";
+import { SET_INPUT, RECEIVE_RESPONSE, RECEIVE_SPEECH, INTERIM_SPEECH_INPUT_RESULT } from "../action";
 
 export const defaultUserInputFormState = {
   inputText: '',
-  waitingForSpeech: false,
 }
 
 export function reduceUserInputForm(state = defaultUserInputFormState, action) {
@@ -17,11 +16,15 @@ export function reduceUserInputForm(state = defaultUserInputFormState, action) {
         ...state,
         inputText: defaultUserInputFormState.inputText,
       };
+    case INTERIM_SPEECH_INPUT_RESULT:
+      return {
+        ...state,
+        inputText: action.text,
+      };
     case RECEIVE_SPEECH:
       return {
         ...state,
         inputText: action.text,
-        waitingForSpeech: false,
       };
     default:
       return state;

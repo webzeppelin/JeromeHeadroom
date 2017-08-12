@@ -6,6 +6,10 @@ export const RECEIVE_SPEECH = "RECEIVE_SPEECH";
 export const SPEAK_RESPONSE = "SPEAK_RESPONSE";
 export const NOTIFY_WORD_SPOKEN = "NOTIFY_WORD_SPOKEN";
 export const SPEAK_RESPONSE_COMPLETE = "SPEAK_RESPONSE_COMPLETE";
+export const SPEECH_INPUT_START = "SPEECH_INPUT_START";
+export const SPEECH_INPUT_END = "SPEECH_INPUT_END";
+export const FINAL_SPEECH_INPUT_RESULT = "FINAL_SPEECH_INPUT_RESULT";
+export const INTERIM_SPEECH_INPUT_RESULT = "INTERIM_SPEECH_INPUT_RESULT";
 
 export function sendInput(input) {
     return {
@@ -58,5 +62,30 @@ export function notifyWordSpoken(charIndex) {
 export function speakResponseComplete() {
     return {
         type: SPEAK_RESPONSE_COMPLETE,
+    }
+}
+
+export function speechInputStart() {
+    return {
+        type: SPEECH_INPUT_START,
+    }
+}
+
+export function speechInputEnd() {
+    return {
+        type: SPEECH_INPUT_END,
+    }
+}
+export function finalSpeechInputResult(speech) {
+    return {
+        type: FINAL_SPEECH_INPUT_RESULT,
+        text: speech,
+    }
+}
+
+export function interimSpeechInputResult(speech) {
+    return {
+        type: INTERIM_SPEECH_INPUT_RESULT,
+        text: speech,
     }
 }

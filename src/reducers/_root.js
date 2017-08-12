@@ -6,13 +6,14 @@ import { reduceResponse } from "./response";
 import { reduceTranscript } from "./transcript";
 import { reduceTest } from "./test";
 import { reduceTalkingHead } from "./talkingHead";
-
+import { reduceSpeechInput } from "./speechInput";
 
 // main reducers
 export const reducers = combineReducers({
   routing: routerReducer,
   // form: formReducer,
   userInputForm: reduceUserInputForm,
+  speechInput: reduceSpeechInput,
   response: reduceResponse,
   transcript: reduceTranscript,
   talkingHead: reduceTalkingHead,

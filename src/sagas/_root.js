@@ -1,8 +1,8 @@
 import { takeLatest } from "redux-saga";
 import { race, call, put, fork, take } from "redux-saga/effects";
 import { SEND_INPUT, REQUEST_SPEECH, SPEAK_RESPONSE, RECEIVE_RESPONSE, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE } from "../action"
-import { sendInput, requestSpeech } from "./home";
-import { speakResponse, receiveResponse } from "./speech";
+import { sendInput } from "./home";
+import { speakResponse, receiveResponse, requestSpeech } from "./speech";
 // root saga generators
 export function* sagas() {
   yield [

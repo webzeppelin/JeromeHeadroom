@@ -9,8 +9,8 @@ export function* sendInput(action) {
     yield put(receiveResponse(action.text));
 }
 
-export function* requestSpeech(action) {
-    console.log("requestSpeech saga called");
-    // TODO:  wire in the speech-to-text browser feature that Jerome and Rick used
-    yield put(receiveSpeech("This would come from speech-to-text"));
-}
+// export function* requestSpeech(action) {
+//     console.log("requestSpeech saga called");
+//     // TODO:  wire in the speech-to-text browser feature that Jerome and Rick used
+//     yield put(receiveSpeech("This would come from speech-to-text"));
+// }

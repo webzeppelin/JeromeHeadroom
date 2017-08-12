@@ -71,7 +71,7 @@ export class UserInputForm extends React.Component {
 function mapStateToProps(state) {
   return {
     inputText: state.userInputForm.inputText,
-    waitingForSpeech: state.userInputForm.waitingForSpeech,
+    waitingForSpeech: state.speechInput.started && !state.speechInput.finished,
     waitingForResponse: state.response.waitingForResponse,
   };
 }
