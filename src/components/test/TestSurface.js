@@ -19,21 +19,32 @@ export class TestSurface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      frame: null,
-      frameLoaded: false,
+      closedFrame: null,
+      closedFrameLoaded: false,
+      openFrame: null,
+      openFrameLoaded: false,
     };
   }
 
   componentDidMount() {
-    console.log("Preloading frame image");
-    var img = document.createElement("img");
-    img.src = "/media/jerome-open-trans.png";
-    img.onload = () => {
-      console.log("image onload called");
-      this.setState({frameLoaded: true});
+    console.log("Preloading frame images");
+    // the closed frame
+    var img1 = document.createElement("img");
+    img1.src = "/media/jerome-closed-trans.png";
+    img1.onload = () => {
+      console.log("image1 onload called");
+      this.setState({closedFrameLoaded: true});
+    };
+    // the open frame
+    var img2 = document.createElement("img");
+    img2.src = "/media/jerome-open-trans.png";
+    img2.onload = () => {
+      console.log("image2 onload called");
+      this.setState({openFrameLoaded: true});
     };
     this.setState({
-      frame: img,
+      closedFrame: img1,
+      openFrame: img2,
     });
   }
 
@@ -72,9 +83,9 @@ export class TestSurface extends React.Component {
   }
 
   renderFrame(width, height) {
-    if (this.state.frameLoaded) {
+    if (this.state.closedFrameLoaded) {
       return (
-        <Image x={0} y={0} width={width} height={height} image={this.state.frame}/>
+        <Image x={0} y={0} width={width} height={height} image={this.state.closedFrame}/>
       );
     }
   }

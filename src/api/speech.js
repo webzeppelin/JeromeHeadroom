@@ -1,3 +1,11 @@
+export const RandomJeromeSayings = [
+  "Once I went a whole week without showering just to prove that I could do it.",
+  "I came here to fly drones and kick ass and I just crashed my last drone.",
+  "Oh, look! Let's go ride jetskis!",
+  "It's filled with organic sugar so it's really healthy.",
+  "Meat or cheese, or meat and cheese?"
+]
+
 export default class SpeechApi {
 
   static textToSpeech(text) {
@@ -20,6 +28,11 @@ export default class SpeechApi {
       // recog.start();
       resolve(recog);
     });
+  }
+
+  static getRandomSaying() {
+    let index = Math.floor(Math.random()*RandomJeromeSayings.length);
+    return RandomJeromeSayings[index];
   }
 
   static createTextToSpeechUtterance(text) {
