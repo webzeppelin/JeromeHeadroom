@@ -38,14 +38,9 @@ export class TalkingHead extends React.Component {
   render() {
     const { mouthOpen, isSpeaking, size } = this.props;
     //const { width, height } = size;
-    let width = size.width;
-    let height = width;
-    // let height = 400;
-    // if (this.props.size) {
-    //   console.log("Got size from SizeMe");
-    //   width = this.props.size.width;
-    //   height = this.props.size.height;
-    // }
+    const width = size.width;
+    const height = width;
+    
     return (
       <Stage width={width} height={height}>
         <Layer>
