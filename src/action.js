@@ -10,6 +10,9 @@ export const SPEECH_INPUT_START = "SPEECH_INPUT_START";
 export const SPEECH_INPUT_END = "SPEECH_INPUT_END";
 export const FINAL_SPEECH_INPUT_RESULT = "FINAL_SPEECH_INPUT_RESULT";
 export const INTERIM_SPEECH_INPUT_RESULT = "INTERIM_SPEECH_INPUT_RESULT";
+export const START_HEAD_BACKGROUND_ANIMATION = "START_HEAD_BACKGROUND_ANIMATION";
+export const ANIMATE_HEAD_BACKGROUND = "ANIMATE_HEAD_BACKGROUND";
+export const STOP_HEAD_BACKGROUND_ANIMATION = "STOP_HEAD_BACKGROUND_ANIMATION";
 
 export function sendInput(input) {
     return {
@@ -76,6 +79,7 @@ export function speechInputEnd() {
         type: SPEECH_INPUT_END,
     }
 }
+
 export function finalSpeechInputResult(speech) {
     return {
         type: FINAL_SPEECH_INPUT_RESULT,
@@ -87,5 +91,24 @@ export function interimSpeechInputResult(speech) {
     return {
         type: INTERIM_SPEECH_INPUT_RESULT,
         text: speech,
+    }
+}
+
+export function startHeadBackgroundAnimation() {
+    return {
+        type: START_HEAD_BACKGROUND_ANIMATION,
+    }
+}
+
+export function animateHeadBackground(timeMillis) {
+    return {
+        type: ANIMATE_HEAD_BACKGROUND,
+        time: timeMillis,
+    }
+}
+
+export function stopHeadBackgroundAnimation() {
+    return {
+        type: STOP_HEAD_BACKGROUND_ANIMATION,
     }
 }

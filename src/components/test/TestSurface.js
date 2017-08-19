@@ -52,12 +52,12 @@ function getRotatedCube(phi, theta, psi) {
 }
 
 const frustrum = {
-  left: -400,
-  right: 400,
-  bottom: -400,
-  top: 400,
-  near: -600,
-  far: 600
+  left: -300,
+  right: 300,
+  bottom: -300,
+  top: 300,
+  near: -300,
+  far: 300
 };
 
 export class TestSurface extends React.Component {
@@ -107,7 +107,7 @@ export class TestSurface extends React.Component {
             {this.renderBackground(width, height)}
             {/* {this.renderLines(width, height)} */}
             {this.renderCube(width, height)}
-            {/* {this.renderFrame(width, height)} */}
+            {this.renderFrame(width, height)} 
           </Layer>
         </Stage>
         <Panel>
