@@ -1,8 +1,9 @@
 import { race, call, put, fork, take } from "redux-saga/effects";
 import { START_HEAD_BACKGROUND_ANIMATION, STOP_HEAD_BACKGROUND_ANIMATION, ANIMATE_HEAD_BACKGROUND,
-    animateHeadBackground as animateHeadBackgroundAction, stopHeadBackgroundAnimation as stopHeadBackgroundAnimationAction } from "../action"
+    animateHeadBackground as animateHeadBackgroundAction, stopHeadBackgroundAnimation as stopHeadBackgroundAnimationAction, closeMouth } from "../action"
 
 const FRAME_DELAY = 50;
+const MOUTH_OPEN_TIME = 200;
 
 export function* startHeadBackgroundAnimation() {
     yield put(animateHeadBackgroundAction((new Date).getTime()));
@@ -26,6 +27,11 @@ export function* animateHeadBackground() {
 function* nextHeadBackgroundFrame() {
   yield call(delay, FRAME_DELAY);
   yield put(animateHeadBackgroundAction((new Date).getTime()));
+}
+
+export function* autoCloseMouth() {
+  yield call(delay, MOUTH_OPEN_TIME);
+  yield put(closeMouth());
 }
 
 function delay(duration) {

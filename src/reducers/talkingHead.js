@@ -1,4 +1,4 @@
-import { SPEAK_RESPONSE, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE, ANIMATE_HEAD_BACKGROUND } from "../action";
+import { SPEAK_RESPONSE, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE, ANIMATE_HEAD_BACKGROUND, CLOSE_MOUTH } from "../action";
 
 export const defaultTalkingHeadState = {
   speakingText: '',
@@ -31,6 +31,7 @@ export function reduceTalkingHead(state = defaultTalkingHeadState, action) {
         ...state,
         currentWordIndex: state.currentWordIndex + 1,
         currentCharIndex: action.charIndex,
+        mouthOpen: true,
       };
     case SPEAK_RESPONSE_COMPLETE:
       return {
@@ -48,6 +49,11 @@ export function reduceTalkingHead(state = defaultTalkingHeadState, action) {
         theta: cubeOrientation[1],
         psi: cubeOrientation[2],
       }
+    case CLOSE_MOUTH:
+      return {
+        ...state,
+        mouthOpen: false,
+      };
     default:
       return state;
   }

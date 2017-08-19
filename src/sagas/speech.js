@@ -2,7 +2,8 @@ import { call, put, take } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import {
   speakResponse as speakResponseAction, notifyWordSpoken, speakResponseComplete, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE,
-  speechInputStart, speechInputEnd, interimSpeechInputResult, finalSpeechInputResult, receiveSpeech, FINAL_SPEECH_INPUT_RESULT
+  speechInputStart, speechInputEnd, interimSpeechInputResult, finalSpeechInputResult, receiveSpeech, FINAL_SPEECH_INPUT_RESULT,
+  closeMouth
 } from "../action";
 import SpeechApi from "../api/speech";
 
@@ -11,6 +12,7 @@ export function* speakResponse(action) {
   const utter = yield call(SpeechApi.textToSpeech, action.text);
   const utterChannel = yield call(createTextToSpeechChannel, utter);
 
+  yield put(closeMouth());
   try {
     while (true) {
       const action = yield take(utterChannel);

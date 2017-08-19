@@ -6,6 +6,7 @@ export const RECEIVE_SPEECH = "RECEIVE_SPEECH";
 export const SPEAK_RESPONSE = "SPEAK_RESPONSE";
 export const NOTIFY_WORD_SPOKEN = "NOTIFY_WORD_SPOKEN";
 export const SPEAK_RESPONSE_COMPLETE = "SPEAK_RESPONSE_COMPLETE";
+export const CLOSE_MOUTH = "CLOSE_MOUTH";
 export const SPEECH_INPUT_START = "SPEECH_INPUT_START";
 export const SPEECH_INPUT_END = "SPEECH_INPUT_END";
 export const FINAL_SPEECH_INPUT_RESULT = "FINAL_SPEECH_INPUT_RESULT";
@@ -59,6 +60,12 @@ export function notifyWordSpoken(charIndex) {
     return {
         type: NOTIFY_WORD_SPOKEN,
         charIndex: charIndex,
+    }
+}
+
+export function closeMouth() {
+    return {
+        type: CLOSE_MOUTH,
     }
 }
 
