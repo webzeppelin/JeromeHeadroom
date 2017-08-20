@@ -36,7 +36,7 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, '/public'),
+    contentBase: __dirname + '/public',
   },
   plugins: [
     new CleanWebpackPlugin(['css/main.css', 'js/jerome-headroom.bundle.js'], {
