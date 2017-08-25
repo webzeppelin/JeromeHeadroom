@@ -1,13 +1,17 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { delay } from "redux-saga";
 import { receiveResponse, receiveSpeech } from "../action";
+import AiApi from "../api/ai";
 import SpeechApi from "../api/speech";
+
+export const getAiState = (state) => state.ai
 
 export function* sendInput(action) {
     console.log("sendInput saga called: "+action.text);
-    // TODO:  call the API.AI agent to get a response
-    yield delay(1000);
-    yield put(receiveResponse(SpeechApi.getRandomSaying()));
+    let aiState = yield select(getAiState);
+    console.log("api.ai session id: "+aiState.sessionId);
+    const response = yield call(AiApi.sayToJerome, aiState.sessionId, action.text);
+    yield put(receiveResponse(response.result.fulfillment.speech));
 }
 
 // export function* requestSpeech(action) {
