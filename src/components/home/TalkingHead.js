@@ -23,11 +23,11 @@ export class TalkingHead extends React.Component {
   componentDidMount() {
     console.log("Preloading frame images");
     // the closed frame
-    let img1 = this.preloadImage("/media/jerome-closed-trans.png", () => {
+    let img1 = this.preloadImage("media/jerome-closed-trans.png", () => {
       console.log("closed frame loaded");
       this.setState({ closedFrameLoaded: true });
     });
-    let img2 = this.preloadImage("/media/jerome-open-trans.png", () => {
+    let img2 = this.preloadImage("media/jerome-open-trans.png", () => {
       console.log("open frame loaded");
       this.setState({ openFrameLoaded: true });
     });
