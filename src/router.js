@@ -11,12 +11,21 @@ import NotFound from "./components/NotFound";
 const app_router = (
   <Router onUpdate={() => window.scrollTo(0, 0)}>
     <Switch>
-      <Route exact path="/" component={HomeContainer}/>
-      <Route path="/test" component={TestContainer}/>
+      <Route exact path={ getAbsolutePath("") } component={HomeContainer}/>
+      <Route path={ getAbsolutePath("test") } component={TestContainer}/>
       <Route path="*" component={NotFound}/>
     </Switch>
   </Router>
 );
+
+// this is a kliudge and only works for the main page which is fine for the moment
+function getAbsolutePath(relativePath) {
+  let url = location;
+  let pathname = url.pathname;
+  // this is needed for IE which doesn't return the leading slash
+  if (!pathname.startsWith("/")) pathname = "/"+pathname;
+  return pathname + relativePath;
+}
 
 // export
 export { app_router };
