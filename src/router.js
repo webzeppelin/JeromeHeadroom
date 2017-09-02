@@ -18,7 +18,7 @@ const app_router = (
   </Router>
 );
 
-// this is a kliudge and only works for the main page which is fine for the moment
+// this is a kludge and only works for the main page which is fine for the moment
 function getAbsolutePath(relativePath) {
   let url = location;
   let pathname = url.pathname;
