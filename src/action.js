@@ -1,7 +1,8 @@
 export const SEND_INPUT = "SEND_INPUT";
 export const SET_INPUT = "SET_INPUT";
 export const RECEIVE_RESPONSE = "RECEIVE_RESPONSE";
-export const REQUEST_SPEECH = "REQUEST_SPEECH";
+export const START_LISTENING = "START_LISTENING";
+export const STOP_LISTENING = "STOP_LISTENING";
 export const RECEIVE_SPEECH = "RECEIVE_SPEECH";
 export const SPEAK_RESPONSE = "SPEAK_RESPONSE";
 export const NOTIFY_WORD_SPOKEN = "NOTIFY_WORD_SPOKEN";
@@ -14,6 +15,8 @@ export const INTERIM_SPEECH_INPUT_RESULT = "INTERIM_SPEECH_INPUT_RESULT";
 export const START_HEAD_BACKGROUND_ANIMATION = "START_HEAD_BACKGROUND_ANIMATION";
 export const ANIMATE_HEAD_BACKGROUND = "ANIMATE_HEAD_BACKGROUND";
 export const STOP_HEAD_BACKGROUND_ANIMATION = "STOP_HEAD_BACKGROUND_ANIMATION";
+export const OPEN_TEXT_INPUT = "OPEN_TEXT_INPUT";
+export const CLOSE_TEXT_INPUT = "CLOSE_TEXT_INPUT";
 
 export function sendInput(input) {
     return {
@@ -36,9 +39,15 @@ export function receiveResponse(response) {
     };
 }
 
-export function requestSpeech() {
+export function startListening() {
     return {
-        type: REQUEST_SPEECH,
+        type: START_LISTENING,
+    }
+}
+
+export function stopListening() {
+    return {
+        type: STOP_LISTENING,
     }
 }
 
@@ -117,5 +126,17 @@ export function animateHeadBackground(timeMillis) {
 export function stopHeadBackgroundAnimation() {
     return {
         type: STOP_HEAD_BACKGROUND_ANIMATION,
+    }
+}
+
+export function openTextInput() {
+    return {
+        type: OPEN_TEXT_INPUT,
+    }
+}
+
+export function closeTextInput() {
+    return {
+        type: CLOSE_TEXT_INPUT,
     }
 }

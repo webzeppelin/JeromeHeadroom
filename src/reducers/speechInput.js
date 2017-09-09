@@ -1,41 +1,54 @@
-import { REQUEST_SPEECH, SPEECH_INPUT_START, SPEECH_INPUT_END, INTERIM_SPEECH_INPUT_RESULT, FINAL_SPEECH_INPUT_RESULT } from "../action";
+import { START_LISTENING, STOP_LISTENING, SPEECH_INPUT_START,
+  SPEECH_INPUT_END, INTERIM_SPEECH_INPUT_RESULT,
+  FINAL_SPEECH_INPUT_RESULT, RECEIVE_SPEECH } from "../action";
 
-export const defaultSpeechInputState = {
+export const defaults = {
   spokenText: '',
-  finished: false,
-  started: false,
-  listening: false,
+  speechRecogRunning: false,
+  speechDetected: false,
+  speechReceived: false,
 }
 
-export function reduceSpeechInput(state = defaultSpeechInputState, action) {
+export function reduceSpeechInput(state = defaults, action) {
   switch (action.type) {
-    case REQUEST_SPEECH:
+    case START_LISTENING:
       return {
-        ...defaultSpeechInputState,
-        started: true,
+        ...defaults,
+        speechRecogRunning: true,
+      };
+    case STOP_LISTENING:
+      return {
+        ...state,
+        speechRecogRunning: false,
       };
     case SPEECH_INPUT_START:
       return {
         ...state,
-        listening: true,
+        speechDetected: true,
       };
     case SPEECH_INPUT_END:
       return {
         ...state,
-        listening: false,
+        speechDetected: false,
       };
     case INTERIM_SPEECH_INPUT_RESULT:
       return {
         ...state,
         spokenText: action.text,
-        finished: false,
+        speechReceived: false,
       };
     case FINAL_SPEECH_INPUT_RESULT:
       return {
         ...state,
         spokenText: action.text,
-        finished: true,
+        speechReceived: true,
       };
+    case RECEIVE_SPEECH:
+      return {
+        ...state,
+        spokenText: defaults.spokenText,
+        speechReceived: defaults.speechReceived,
+      }
     default:
       return state;
   }

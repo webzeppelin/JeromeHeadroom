@@ -1,7 +1,7 @@
 import { SEND_INPUT, RECEIVE_RESPONSE } from "../action";
 
 export const defaultResponseState = {
-  responseText: '',
+  responseText: 'I am Jerome Headroom. Press the Talk button and start talking to me.',
   waitingForResponse: false,
 }
 

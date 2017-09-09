@@ -1,9 +1,9 @@
-import { call, put, take } from "redux-saga/effects";
+import { call, put, take, race, fork } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import {
   speakResponse as speakResponseAction, notifyWordSpoken, speakResponseComplete, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE,
-  speechInputStart, speechInputEnd, interimSpeechInputResult, finalSpeechInputResult, receiveSpeech, FINAL_SPEECH_INPUT_RESULT,
-  closeMouth
+  speechInputStart, speechInputEnd, interimSpeechInputResult, finalSpeechInputResult, receiveSpeech, START_LISTENING, STOP_LISTENING, FINAL_SPEECH_INPUT_RESULT,
+  closeMouth, sendInput, stopListening
 } from "../action";
 import SpeechApi from "../api/speech";
 
@@ -29,27 +29,41 @@ export function* receiveResponse(action) {
   yield put(speakResponseAction(action.text));
 }
 
-export function* requestSpeech(action) {
-  console.log("Debug: requestSpeech saga called");
+export function* speechInput() {
+  while (true) {
+    yield take(START_LISTENING);
+    yield race([
+      fork(recognizeSpeech),
+      take(STOP_LISTENING)
+    ]);
+  }
+}
+
+function* recognizeSpeech(action) {
   const recog = yield call(SpeechApi.speechToText);
   const recogChannel = yield call(createSpeechToTextChannel, recog);
   recog.start();
 
-  let finalTranscript = "";
   try {
     while (true) {
       const action = yield take(recogChannel);
       yield put(action);
-      if (action.type === FINAL_SPEECH_INPUT_RESULT) {
-        finalTranscript = action.text;
-        break;
+      let breakOut = false;
+      switch (action.type) {
+        case FINAL_SPEECH_INPUT_RESULT:
+          console.log("Speech input received");
+          yield put(receiveSpeech(action.text));
+          yield put(sendInput(action.text));
+          break;
+        case STOP_LISTENING:
+          breakOut = true;
+          break;
       }
+      if (breakOut) break;
     }
   } finally {
     recogChannel.close();
   }
-
-  yield put(receiveSpeech(finalTranscript));
 }
 
 function createTextToSpeechChannel(utter) {
@@ -87,22 +101,31 @@ function createSpeechToTextChannel(recog) {
   return eventChannel(emit => {
 
     const onResult = (event) => {
-      // console.log("onresult");
+      // console.log(event);
 
-      let isFinal = event.results.length > 0;
+      let finalFound = false;
       let transcriptParts = [];
-      for (let i=0; i<event.results.length; i++) {
+      for (let i=event.results.length-1; i>-1; i--) {
+        
+        if (finalFound) break;
+        
         let result = event.results[i];
-        transcriptParts.push(result[0].transcript);
-        if (!result.isFinal) {
-          isFinal = false;
+        if (result.isFinal) {
+          // we found a final result
+          if (transcriptParts.length > 0) {
+            // we are into the backlog of the conversation
+            break;
+          } else {
+            // this is the one and only result we are going to take
+            finalFound = true;
+          }
         }
+        transcriptParts.unshift(result[0].transcript);
       }
-      let text = transcriptParts.join("/");
-      if (isFinal) {
-        emit(finalSpeechInputResult(text));
+      if (finalFound) {
+        emit(finalSpeechInputResult(transcriptParts.join(" ")));
       } else {
-        emit(interimSpeechInputResult(text));
+        emit(interimSpeechInputResult(transcriptParts.join("/")));
       }
     }
 
@@ -116,10 +139,21 @@ function createSpeechToTextChannel(recog) {
       emit(speechInputEnd());
     }
 
+    const onEnd = (event) => {
+      console.log("onend");
+      emit(stopListening());
+    }
+
+    const onStart = (event) => {
+      console.log("onstart");
+    }
+
     // setup the subscription
     recog.onresult = onResult;
     recog.onspeechstart = onSpeechStart;
     recog.onspeechend = onSpeechEnd;
+    recog.onstart = onStart;
+    recog.onend = onEnd;
 
     const unsubscribe = () => {
       // do nothing or the thing below

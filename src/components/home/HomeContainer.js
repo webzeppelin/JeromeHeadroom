@@ -4,7 +4,9 @@ import { Row, Col, Panel } from "react-bootstrap";
 import { UserInputForm } from "./UserInputForm";
 import { Transcript } from "./Transcript";
 import { TalkingHead } from "./TalkingHead";
+import { RequestText } from "./RequestText";
 import { ResponseText } from "./ResponseText";
+import { ButtonBar } from "./ButtonBar";
 
 // Home page component
 export class HomeContainer extends React.Component {
@@ -15,20 +17,20 @@ export class HomeContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <Panel>
         <Row>
           <Col xs={12} md={6}>
-            <Panel>
               <TalkingHead />
-              <ResponseText />
-            </Panel>
           </Col>
           <Col xs={12} md={6}>
+            <ButtonBar textInput={false} />
             <UserInputForm />
+            <RequestText />
+            <ResponseText />
             <Transcript />
           </Col>
         </Row>
-      </div>
+      </Panel>
     );
   }
 }
