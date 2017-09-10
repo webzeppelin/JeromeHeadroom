@@ -1,27 +1,27 @@
-import { SET_INPUT, RECEIVE_RESPONSE, RECEIVE_SPEECH, INTERIM_SPEECH_INPUT_RESULT } from "../action";
+import * as Action from "../action";
 
-export const defaultUserInputFormState = {
+export const defaults = {
   inputText: '',
 }
 
-export function reduceUserInputForm(state = defaultUserInputFormState, action) {
+export function reduceUserInputForm(state = defaults, action) {
   switch (action.type) {
-    case SET_INPUT:
+    case Action.SET_INPUT:
       return {
         ...state,
         inputText: action.text,
       };
-    case RECEIVE_RESPONSE:
+    case Action.RECEIVE_RESPONSE:
       return {
         ...state,
-        inputText: defaultUserInputFormState.inputText,
+        inputText: defaults.inputText,
       };
-    case INTERIM_SPEECH_INPUT_RESULT:
+    case Action.INTERIM_SPEECH_INPUT_RESULT:
       return {
         ...state,
         inputText: action.text,
       };
-    case RECEIVE_SPEECH:
+    case Action.RECEIVE_SPEECH:
       return {
         ...state,
         inputText: action.text,

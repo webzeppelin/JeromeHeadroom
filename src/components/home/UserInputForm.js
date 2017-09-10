@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { FormGroup, FormControl, Button, Glyphicon, ControlLabel } from "react-bootstrap";
-import { sendInput, setInput, startListening } from "../../action";
+import * as Action from "../../action";
 
 export class UserInputForm extends React.Component {
   constructor(props) {
@@ -43,18 +43,18 @@ export class UserInputForm extends React.Component {
 
   handleInputChange(event) {
     let input = event.target.value;
-    this.props.dispatch(setInput(input));
+    this.props.dispatch(Action.setInput(input));
   }
 
   handleInputSend(event) {
     const { inputText } = this.props;
-    this.props.dispatch(sendInput(inputText));
-    this.props.dispatch(setInput(''));
+    this.props.dispatch(Action.sendInput(inputText));
+    this.props.dispatch(Action.setInput(''));
   }
 
   handleInputClear(event) {
     console.log("Clear called");
-    this.props.dispatch(setInput(''));
+    this.props.dispatch(Action.setInput(''));
   }
 
   focusToInput() {

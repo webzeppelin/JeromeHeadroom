@@ -1,18 +1,18 @@
-import { SEND_INPUT, RECEIVE_RESPONSE } from "../action";
+import * as Action from "../action";
 
-export const defaultResponseState = {
+export const defaults = {
   responseText: 'I am Jerome Headroom. Press the Talk button and start talking to me.',
   waitingForResponse: false,
 }
 
-export function reduceResponse(state = defaultResponseState, action) {
+export function reduceResponse(state = defaults, action) {
   switch (action.type) {
-    case SEND_INPUT:
+    case Action.SEND_INPUT:
       return {
         ...state,
         waitingForResponse: true,
       };
-    case RECEIVE_RESPONSE:
+    case Action.RECEIVE_RESPONSE:
       return {
         responseText: action.text,
         waitingForResponse: false,

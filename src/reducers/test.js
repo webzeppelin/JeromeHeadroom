@@ -1,7 +1,7 @@
-export const defaultTestState = {
+export const defaults = {
   state1: "DEFAULT STATE 1",
 }
 
-export function reduceTest(state = defaultTestState, action) {
+export function reduceTest(state = defaults, action) {
   return state;
 }

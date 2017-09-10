@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ButtonToolbar, ButtonGroup, Button, Glyphicon } from "react-bootstrap";
-import { startListening, stopListening, speakResponse, openTextInput, closeTextInput } from "../../action";
+import * as Action from "../../action";
 
 export class ButtonBar extends React.Component {
 
@@ -9,6 +9,7 @@ export class ButtonBar extends React.Component {
     super(props);
     this.handleReplay = this.handleReplay.bind(this);
   }
+  
   render() {
     const { speechRecogRunning } = this.props;
     return (
@@ -28,7 +29,7 @@ export class ButtonBar extends React.Component {
       return (
         <Button
           bsStyle="success"
-          onClick={() => {this.props.dispatch(stopListening())}}>
+          onClick={() => {this.props.dispatch(Action.stopListening())}}>
             <Glyphicon glyph="stop"/> Talk
         </Button>
       );
@@ -36,7 +37,7 @@ export class ButtonBar extends React.Component {
       return (
         <Button
           bsStyle="primary"
-          onClick={() => {this.props.dispatch(startListening())}}>
+          onClick={() => {this.props.dispatch(Action.startListening())}}>
             <Glyphicon glyph="play"/> Talk
         </Button>
       );
@@ -49,7 +50,7 @@ export class ButtonBar extends React.Component {
       return (
         <Button
           bsStyle="success"
-          onClick={() => {this.props.dispatch(closeTextInput())}}>
+          onClick={() => {this.props.dispatch(Action.closeTextInput())}}>
           <Glyphicon glyph="hand-up"/> Type
         </Button>
       );
@@ -57,7 +58,7 @@ export class ButtonBar extends React.Component {
       return (
         <Button
           bsStyle="primary"
-          onClick={() => {this.props.dispatch(openTextInput())}}>
+          onClick={() => {this.props.dispatch(Action.openTextInput())}}>
           <Glyphicon glyph="hand-down"/> Type
         </Button>
       );
@@ -78,7 +79,7 @@ export class ButtonBar extends React.Component {
   handleReplay() {
     const { responseText, waitingForResponse } = this.props;
     if (waitingForResponse) return;
-    this.props.dispatch(speakResponse(responseText));
+    this.props.dispatch(Action.speakResponse(responseText));
   }
 }
 

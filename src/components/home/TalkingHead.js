@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { Mat44, Mat33, Vec4, Vec3 } from "alfador";
 import { Layer, Rect, Line, Stage, Group, Image } from 'react-konva';
 import SizeMe from 'react-sizeme';
-import { startHeadBackgroundAnimation, stopHeadBackgroundAnimation, speakResponse } from "../../action";
+import * as Action from "../../action";
 
 export class TalkingHead extends React.Component {
   constructor(props) {
@@ -28,14 +28,14 @@ export class TalkingHead extends React.Component {
       console.log("closed frame loaded");
       this.setState({ closedFrameLoaded: true });
       if (this.state.openFrameLoaded && !this.state.spokeGreeting) {
-        this.props.dispatch(speakResponse(this.props.responseText));
+        this.props.dispatch(Action.speakResponse(this.props.responseText));
       }
     });
     let img2 = this.preloadImage("media/jerome-open-trans.png", () => {
       console.log("open frame loaded");
       this.setState({ openFrameLoaded: true });
       if (this.state.closedFrameLoaded && !this.state.spokeGreeting) {
-        this.props.dispatch(speakResponse(this.props.responseText));
+        this.props.dispatch(Action.speakResponse(this.props.responseText));
       }
     });
 
@@ -44,12 +44,12 @@ export class TalkingHead extends React.Component {
       openFrame: img2,
     });
 
-    this.props.dispatch(startHeadBackgroundAnimation());
+    this.props.dispatch(Action.startHeadBackgroundAnimation());
   }
 
   componentWillUnmount() {
     console.log("Stopping head background animation");
-    this.props.dispatch(stopHeadBackgroundAnimation());
+    this.props.dispatch(Action.stopHeadBackgroundAnimation());
   }
 
   render() {

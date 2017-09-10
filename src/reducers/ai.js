@@ -1,4 +1,4 @@
-export const defaultAiState = {
+export const defaults = {
   sessionId: guid(),
 }
 
@@ -10,7 +10,7 @@ function guid() {
   return _p8() + _p8(true) + _p8(true) + _p8();
 }
 
-export function reduceAi(state = defaultAiState, action) {
+export function reduceAi(state = defaults, action) {
   switch (action.type) {
     default:
       return state;

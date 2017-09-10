@@ -1,6 +1,4 @@
-import { START_LISTENING, STOP_LISTENING, SPEECH_INPUT_START,
-  SPEECH_INPUT_END, INTERIM_SPEECH_INPUT_RESULT,
-  FINAL_SPEECH_INPUT_RESULT, RECEIVE_SPEECH } from "../action";
+import * as Action from "../action";
 
 export const defaults = {
   spokenText: '',
@@ -11,39 +9,39 @@ export const defaults = {
 
 export function reduceSpeechInput(state = defaults, action) {
   switch (action.type) {
-    case START_LISTENING:
+    case Action.START_LISTENING:
       return {
         ...defaults,
         speechRecogRunning: true,
       };
-    case STOP_LISTENING:
+    case Action.STOP_LISTENING:
       return {
         ...state,
         speechRecogRunning: false,
       };
-    case SPEECH_INPUT_START:
+    case Action.SPEECH_INPUT_START:
       return {
         ...state,
         speechDetected: true,
       };
-    case SPEECH_INPUT_END:
+    case Action.SPEECH_INPUT_END:
       return {
         ...state,
         speechDetected: false,
       };
-    case INTERIM_SPEECH_INPUT_RESULT:
+    case Action.INTERIM_SPEECH_INPUT_RESULT:
       return {
         ...state,
         spokenText: action.text,
         speechReceived: false,
       };
-    case FINAL_SPEECH_INPUT_RESULT:
+    case Action.FINAL_SPEECH_INPUT_RESULT:
       return {
         ...state,
         spokenText: action.text,
         speechReceived: true,
       };
-    case RECEIVE_SPEECH:
+    case Action.RECEIVE_SPEECH:
       return {
         ...state,
         spokenText: defaults.spokenText,

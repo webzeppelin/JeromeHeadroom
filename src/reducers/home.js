@@ -1,5 +1,4 @@
-// import Action from "../action";
-import { OPEN_TEXT_INPUT, CLOSE_TEXT_INPUT, SEND_INPUT } from "../action";
+import * as Action from "../action";
 
 export const defaults = {
   textInputOpen: false,
@@ -7,17 +6,17 @@ export const defaults = {
 
 export function reduceHome(state = defaults, action) {
   switch (action.type) {
-    case OPEN_TEXT_INPUT:
+    case Action.OPEN_TEXT_INPUT:
       return {
         ...state,
         textInputOpen: true,
       };
-    case CLOSE_TEXT_INPUT:
+    case Action.CLOSE_TEXT_INPUT:
       return {
         ...state,
         textInputOpen: false,
       };
-    case SEND_INPUT:
+    case Action.SEND_INPUT:
       return {
         ...state,
         textInputOpen: false,

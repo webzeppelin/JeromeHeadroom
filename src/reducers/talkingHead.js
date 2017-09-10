@@ -1,6 +1,6 @@
-import { SPEAK_RESPONSE, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE, ANIMATE_HEAD_BACKGROUND, CLOSE_MOUTH } from "../action";
+import * as Action from "../action";
 
-export const defaultTalkingHeadState = {
+export const defaults = {
   speakingText: '',
   currentWordIndex: -1,
   currentCharIndex: -1,
@@ -16,9 +16,9 @@ const phiPeriod = 180000;
 const thetaPeriod = 120000;
 const psiPeriod = 60000; 
 
-export function reduceTalkingHead(state = defaultTalkingHeadState, action) {
+export function reduceTalkingHead(state = defaults, action) {
   switch (action.type) {
-    case SPEAK_RESPONSE:
+    case Action.SPEAK_RESPONSE:
       return {
         ...state,
         speakingText: action.text,
@@ -26,22 +26,22 @@ export function reduceTalkingHead(state = defaultTalkingHeadState, action) {
         mouthOpen: true,
         isSpeaking: true,
       };
-    case NOTIFY_WORD_SPOKEN:
+    case Action.NOTIFY_WORD_SPOKEN:
       return {
         ...state,
         currentWordIndex: state.currentWordIndex + 1,
         currentCharIndex: action.charIndex,
         mouthOpen: true,
       };
-    case SPEAK_RESPONSE_COMPLETE:
+    case Action.SPEAK_RESPONSE_COMPLETE:
       return {
         ...state,
-        speakingText: defaultTalkingHeadState.speakingText,
-        currentWordIndex: defaultTalkingHeadState.currentWordIndex,
-        mouthOpen: defaultTalkingHeadState.mouthOpen,
-        isSpeaking: defaultTalkingHeadState.isSpeaking,
+        speakingText: defaults.speakingText,
+        currentWordIndex: defaults.currentWordIndex,
+        mouthOpen: defaults.mouthOpen,
+        isSpeaking: defaults.isSpeaking,
       };
-    case ANIMATE_HEAD_BACKGROUND:
+    case Action.ANIMATE_HEAD_BACKGROUND:
       let cubeOrientation = calculateCubeOrientation(state.timeBase, action.time);
       return {
         ...state,
@@ -49,7 +49,7 @@ export function reduceTalkingHead(state = defaultTalkingHeadState, action) {
         theta: cubeOrientation[1],
         psi: cubeOrientation[2],
       }
-    case CLOSE_MOUTH:
+    case Action.CLOSE_MOUTH:
       return {
         ...state,
         mouthOpen: false,

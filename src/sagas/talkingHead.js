@@ -1,37 +1,36 @@
 import { race, call, put, fork, take } from "redux-saga/effects";
-import { START_HEAD_BACKGROUND_ANIMATION, STOP_HEAD_BACKGROUND_ANIMATION, ANIMATE_HEAD_BACKGROUND,
-    animateHeadBackground as animateHeadBackgroundAction, stopHeadBackgroundAnimation as stopHeadBackgroundAnimationAction, closeMouth } from "../action"
+import * as Action from "../action";
 
 const FRAME_DELAY = 50;
-const MOUTH_OPEN_TIME = 200;
+const MOUTH_OPEN_TIME = 250;
 
 export function* startHeadBackgroundAnimation() {
-    yield put(animateHeadBackgroundAction((new Date).getTime()));
+    yield put(Action.animateHeadBackground((new Date).getTime()));
 }
 
 export function* stopHeadBackgroundAnimation() {
-    yield put(stopHeadBackgroundAnimationAction());
+    yield put(Action.stopHeadBackgroundAnimation());
 }
 
 export function* animateHeadBackground() {
   console.log("Debug: animateHeadBackground()");
   while (true) {
-    yield take(ANIMATE_HEAD_BACKGROUND);
+    yield take(Action.ANIMATE_HEAD_BACKGROUND);
     yield race([
       fork(nextHeadBackgroundFrame),
-      take(STOP_HEAD_BACKGROUND_ANIMATION)
+      take(Action.STOP_HEAD_BACKGROUND_ANIMATION)
     ]);
   }
 }
 
 function* nextHeadBackgroundFrame() {
   yield call(delay, FRAME_DELAY);
-  yield put(animateHeadBackgroundAction((new Date).getTime()));
+  yield put(Action.animateHeadBackground((new Date).getTime()));
 }
 
 export function* autoCloseMouth() {
   yield call(delay, MOUTH_OPEN_TIME);
-  yield put(closeMouth());
+  yield put(Action.closeMouth());
 }
 
 function delay(duration) {

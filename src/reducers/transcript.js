@@ -1,16 +1,16 @@
-import { SEND_INPUT, RECEIVE_RESPONSE } from "../action";
+import * as Action from "../action";
 
-export const defaultTranscriptState = {
+export const defaults = {
   entries: [],
 }
 
-export function reduceTranscript(state = defaultTranscriptState, action) {
+export function reduceTranscript(state = defaults, action) {
   switch (action.type) {
-    case SEND_INPUT:
+    case Action.SEND_INPUT:
       return {
-        entries: appendToConversation(state.entries, "User", action.text),
+        entries: appendToConversation(state.entries, "You", action.text),
       };
-    case RECEIVE_RESPONSE:
+    case Action.RECEIVE_RESPONSE:
       return {
         entries: appendToConversation(state.entries, "Jerome", action.text),
       };

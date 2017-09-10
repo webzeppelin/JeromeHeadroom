@@ -1,10 +1,6 @@
 import { call, put, take, race, fork } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
-import {
-  speakResponse as speakResponseAction, notifyWordSpoken, speakResponseComplete, NOTIFY_WORD_SPOKEN, SPEAK_RESPONSE_COMPLETE,
-  speechInputStart, speechInputEnd, interimSpeechInputResult, finalSpeechInputResult, receiveSpeech, START_LISTENING, STOP_LISTENING, FINAL_SPEECH_INPUT_RESULT,
-  closeMouth, sendInput, stopListening
-} from "../action";
+import * as Action from "../action";
 import SpeechApi from "../api/speech";
 
 export function* speakResponse(action) {
@@ -12,12 +8,12 @@ export function* speakResponse(action) {
   const utter = yield call(SpeechApi.textToSpeech, action.text);
   const utterChannel = yield call(createTextToSpeechChannel, utter);
 
-  yield put(closeMouth());
+  yield put(Action.closeMouth());
   try {
     while (true) {
       const action = yield take(utterChannel);
       yield put(action);
-      if (action.type === SPEAK_RESPONSE_COMPLETE) { break; }
+      if (action.type === Action.SPEAK_RESPONSE_COMPLETE) { break; }
     }
   } finally {
     utterChannel.close();
@@ -26,15 +22,15 @@ export function* speakResponse(action) {
 
 export function* receiveResponse(action) {
   console.log("Debug: receiveResponse saga called with: " + action.text);
-  yield put(speakResponseAction(action.text));
+  yield put(Action.speakResponse(action.text));
 }
 
 export function* speechInput() {
   while (true) {
-    yield take(START_LISTENING);
+    yield take(Action.START_LISTENING);
     yield race([
       fork(recognizeSpeech),
-      take(STOP_LISTENING)
+      take(Action.STOP_LISTENING)
     ]);
   }
 }
@@ -50,16 +46,19 @@ function* recognizeSpeech(action) {
       yield put(action);
       let breakOut = false;
       switch (action.type) {
-        case FINAL_SPEECH_INPUT_RESULT:
+        case Action.FINAL_SPEECH_INPUT_RESULT:
           console.log("Speech input received");
-          yield put(receiveSpeech(action.text));
-          yield put(sendInput(action.text));
+          yield put(Action.receiveSpeech(action.text));
+          yield put(Action.sendInput(action.text));
           break;
-        case STOP_LISTENING:
+        case Action.STOP_LISTENING:
           breakOut = true;
           break;
       }
-      if (breakOut) break;
+      if (breakOut) {
+        console.log("Breaking out of speech recog");
+        break;
+      }
     }
   } finally {
     recogChannel.close();
@@ -73,13 +72,13 @@ function createTextToSpeechChannel(utter) {
 
     const onBoundaryHandler = (event) => {
       if (event.name === "word") {
-        emit(notifyWordSpoken(event.charIndex));
+        emit(Action.notifyWordSpoken(event.charIndex));
       }
 
     }
 
     const onEndHandler = (event) => {
-      emit(speakResponseComplete());
+      emit(Action.speakResponseComplete());
     }
 
     // setup the subscription
@@ -123,25 +122,25 @@ function createSpeechToTextChannel(recog) {
         transcriptParts.unshift(result[0].transcript);
       }
       if (finalFound) {
-        emit(finalSpeechInputResult(transcriptParts.join(" ")));
+        emit(Action.finalSpeechInputResult(transcriptParts.join(" ")));
       } else {
-        emit(interimSpeechInputResult(transcriptParts.join("/")));
+        emit(Action.interimSpeechInputResult(transcriptParts.join("/")));
       }
     }
 
     const onSpeechStart = (event) => {
       console.log("onspeechstart");
-      emit(speechInputStart());
+      emit(Action.speechInputStart());
     }
 
     const onSpeechEnd = (event) => {
       console.log("onspeechend");
-      emit(speechInputEnd());
+      emit(Action.speechInputEnd());
     }
 
     const onEnd = (event) => {
       console.log("onend");
-      emit(stopListening());
+      emit(Action.stopListening());
     }
 
     const onStart = (event) => {
