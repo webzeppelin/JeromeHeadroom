@@ -1,22 +1,37 @@
-import { call, put, take, race, fork } from "redux-saga/effects";
+import { call, put, take, race, fork, cancelled } from "redux-saga/effects";
+import { takeLatest } from "redux-saga";
 import { eventChannel } from "redux-saga";
+import { handleFailure } from "./common";
 import * as Action from "../action";
 import SpeechApi from "../api/speech";
 
+export default function* speechSaga() {
+  yield takeLatest(Action.SPEAK_RESPONSE, speakResponse);
+  yield takeLatest(Action.RECEIVE_RESPONSE, receiveResponse);
+  // yield takeLatest(Action.SPEAK_RESPONSE_FAILED, handleFailure);
+  yield takeLatest(Action.SPEECH_INPUT_FAILED, handleFailure);
+  yield fork(speechInput);
+}
+
 export function* speakResponse(action) {
   console.log("Debug: speakResponse saga called with: " + action.text);
-  const utter = yield call(SpeechApi.textToSpeech, action.text);
-  const utterChannel = yield call(createTextToSpeechChannel, utter);
-
-  yield put(Action.closeMouth());
   try {
-    while (true) {
-      const action = yield take(utterChannel);
-      yield put(action);
-      if (action.type === Action.SPEAK_RESPONSE_COMPLETE) { break; }
+    const utter = yield call(SpeechApi.textToSpeech, action.text);
+    const utterChannel = yield call(createTextToSpeechChannel, utter);
+
+    yield put(Action.closeMouth());
+    try {
+      while (true) {
+        const action = yield take(utterChannel);
+        yield put(action);
+        if (action.type === Action.SPEAK_RESPONSE_COMPLETE) { break; }
+      }
+    } finally {
+      utterChannel.close();
     }
-  } finally {
-    utterChannel.close();
+  } catch (error) {
+    yield put(Action.speakResponseFailed("I'm trying to talk to you but my mouth isn't working."))
+    console.error(error);
   }
 }
 
@@ -26,12 +41,17 @@ export function* receiveResponse(action) {
 }
 
 export function* speechInput() {
-  while (true) {
-    yield take(Action.START_LISTENING);
-    yield race([
-      fork(recognizeSpeech),
-      take(Action.STOP_LISTENING)
-    ]);
+  try {
+    while (true) {
+      yield take(Action.START_LISTENING);
+      yield race([
+        call(recognizeSpeech),
+        take(Action.STOP_LISTENING)
+      ]);
+    }
+  } catch (error) {
+    yield put(Action.speakInputFailed("I can't make sense of your babble because my ears are not working."))
+    console.error(error);
   }
 }
 

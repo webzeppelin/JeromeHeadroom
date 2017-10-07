@@ -1,8 +1,17 @@
 import { race, call, put, fork, take } from "redux-saga/effects";
+import { takeLatest } from "redux-saga";
+
 import * as Action from "../action";
 
-const FRAME_DELAY = 50;
+const FRAME_DELAY = 100;
 const MOUTH_OPEN_TIME = 250;
+
+export default function* talkingHeadSaga() {
+  yield takeLatest(Action.START_HEAD_BACKGROUND_ANIMATION, startHeadBackgroundAnimation);
+  yield takeLatest(Action.STOP_HEAD_BACKGROUND_ANIMATION, stopHeadBackgroundAnimation);
+  yield takeLatest(Action.CLOSE_MOUTH, autoCloseMouth);
+  yield fork(animateHeadBackground);
+}
 
 export function* startHeadBackgroundAnimation() {
     yield put(Action.animateHeadBackground((new Date).getTime()));

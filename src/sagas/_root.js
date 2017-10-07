@@ -1,25 +1,35 @@
 import { takeLatest } from "redux-saga";
-import { race, call, put, fork, take } from "redux-saga/effects";
+import { race, call, put, fork, take, spawn } from "redux-saga/effects";
+import { delay } from 'redux-saga'
 import * as Action from "../action";
-import { sendInput } from "./home";
-import { speakResponse, receiveResponse, speechInput } from "./speech";
-import { startHeadBackgroundAnimation, stopHeadBackgroundAnimation, animateHeadBackground, autoCloseMouth } from "./talkingHead";
-// root saga generators
+
+import homeSaga from "./home";
+import speechSaga from "./speech";
+import talkingHeadSaga from "./talkingHead";
+
+const makeRestartable = (saga) => {
+  return function* () {
+    yield spawn(function* () {
+      while (true) {
+        try {
+          yield call(saga);
+          console.error("Unexpected root saga termination.", saga);
+        } catch (e) {
+          console.error("Saga error, the saga will be restarted", e);
+        }
+        yield delay(3000);
+      }
+    })
+  };
+};
+
+const rootSagas = [
+  homeSaga,
+  speechSaga,
+  talkingHeadSaga,
+].map(makeRestartable);
+
 export function* sagas() {
-  yield [
-    fork(takeLatest, Action.SEND_INPUT, sendInput),
-    fork(takeLatest, Action.SPEAK_RESPONSE, speakResponse),
-    fork(takeLatest, Action.RECEIVE_RESPONSE, receiveResponse),
-    fork(takeLatest, Action.START_HEAD_BACKGROUND_ANIMATION, startHeadBackgroundAnimation),
-    fork(takeLatest, Action.STOP_HEAD_BACKGROUND_ANIMATION, stopHeadBackgroundAnimation),
-    fork(takeLatest, Action.CLOSE_MOUTH, autoCloseMouth),
-    speechInput(),
-    animateHeadBackground(),
-    // fork(takeLatest, NOTIFY_WORD_SPOKEN, logAction),
-    // fork(takeLatest, SPEAK_RESPONSE_COMPLETE, logAction),
-  ];
+  yield rootSagas.map(saga => call(saga));
 }
 
-export function* logAction(action) {
-  console.log("logAction: "+action.type);
-}

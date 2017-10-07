@@ -1,15 +1,19 @@
 export const SEND_INPUT = "SEND_INPUT";
+export const SEND_INPUT_FAILED = "SEND_INPUT_FAILED";
 export const SET_INPUT = "SET_INPUT";
 export const RECEIVE_RESPONSE = "RECEIVE_RESPONSE";
+export const RECEIVE_ERROR_RESPONSE = "RECEIVE_ERROR_RESPONSE";
 export const START_LISTENING = "START_LISTENING";
 export const STOP_LISTENING = "STOP_LISTENING";
 export const RECEIVE_SPEECH = "RECEIVE_SPEECH";
 export const SPEAK_RESPONSE = "SPEAK_RESPONSE";
+export const SPEAK_RESPONSE_FAILED = "SPEAK_RESPONSE_FAILED";
 export const NOTIFY_WORD_SPOKEN = "NOTIFY_WORD_SPOKEN";
 export const SPEAK_RESPONSE_COMPLETE = "SPEAK_RESPONSE_COMPLETE";
 export const CLOSE_MOUTH = "CLOSE_MOUTH";
 export const SPEECH_INPUT_START = "SPEECH_INPUT_START";
 export const SPEECH_INPUT_END = "SPEECH_INPUT_END";
+export const SPEECH_INPUT_FAILED = "SPEECH_INPUT_FAILED";
 export const FINAL_SPEECH_INPUT_RESULT = "FINAL_SPEECH_INPUT_RESULT";
 export const INTERIM_SPEECH_INPUT_RESULT = "INTERIM_SPEECH_INPUT_RESULT";
 export const START_HEAD_BACKGROUND_ANIMATION = "START_HEAD_BACKGROUND_ANIMATION";
@@ -25,6 +29,13 @@ export function sendInput(input) {
     };
 }
 
+export function sendInputFailed(error) {
+    return {
+        type: SEND_INPUT_FAILED,
+        error: error,
+    };
+}
+
 export function setInput(input) {
     return {
         type: SET_INPUT,
@@ -35,6 +46,13 @@ export function setInput(input) {
 export function receiveResponse(response) {
     return {
         type: RECEIVE_RESPONSE,
+        text: response,
+    };
+}
+
+export function receiveErrorResponse(response) {
+    return {
+        type: RECEIVE_ERROR_RESPONSE,
         text: response,
     };
 }
@@ -62,6 +80,13 @@ export function speakResponse(response) {
     return {
         type: SPEAK_RESPONSE,
         text: response,
+    }
+}
+
+export function speakResponseFailed(error) {
+    return {
+        type: SPEAK_RESPONSE_FAILED,
+        error: error,
     }
 }
 
@@ -93,6 +118,13 @@ export function speechInputStart() {
 export function speechInputEnd() {
     return {
         type: SPEECH_INPUT_END,
+    }
+}
+
+export function speechInputFailed(error) {
+    return {
+        type: SPEECH_INPUT_FAILED,
+        error: error,
     }
 }
 
