@@ -18,7 +18,8 @@ export class TalkingHead extends React.Component {
       spokeGreeting: false,
     };
 
-    this.opM = this.generateOrthographicProjectionMatrix();
+    // this.opM = this.generateOrthographicProjectionMatrix();
+    this.opM = this.generatePerspectiveProjectionMatrix();
   }
 
   componentDidMount() {
@@ -110,8 +111,10 @@ export class TalkingHead extends React.Component {
     while (distance < guideLength) {
       let modelPt1 = (new Vec3(cube[cornerIndexes[0]])).add(guideUnitV.multScalar(distance));
       let modelPt2 = (new Vec3(cube[cornerIndexes[3]])).add(guideUnitV.multScalar(distance));
+      // console.log("model points: ("+modelPt1+") ("+modelPt2+")");
       let endpoint1 = this.projectWorldToView(modelPt1.toArray(), width, height);
       let endpoint2 = this.projectWorldToView(modelPt2.toArray(), width, height);
+      // console.log("view points: ("+endpoint1+") ("+endpoint2+")");
       if (endpoint1[2] <= 0 || endpoint2[2] <= 0) {
         let actualStart = endpoint1;
         let actualEnd = endpoint2;
@@ -147,7 +150,9 @@ export class TalkingHead extends React.Component {
 
   projectWorldToView(pt, viewWidth, viewHeight) {
     let ptV = [pt[0], pt[1], pt[2], 1];
+    //console.log("World point -> ("+ptV+")");
     let projV = this.opM.multVec4(ptV);
+    //console.log("View point -> ("+projV+")");
     let halfWidth = viewWidth / 2;
     let halfHeight = viewHeight / 2;
     return [projV.x * halfWidth + halfWidth, projV.y * halfHeight + halfHeight, projV.z];
@@ -188,6 +193,25 @@ export class TalkingHead extends React.Component {
       -1 * (frustrum.top + frustrum.bottom) / (frustrum.top - frustrum.bottom),
       -1 * (frustrum.far + frustrum.near) / (frustrum.far - frustrum.near),
       1
+    ]);
+  }
+
+  generatePerspectiveProjectionMatrix() {
+    return new Mat44([
+      // col 1
+      (2.0 * frustrum.near) / (frustrum.right - frustrum.left), 0, 0, 0,
+      // col 2
+      0, (2.0 * frustrum.near) / (frustrum.top - frustrum.bottom), 0, 0,
+      // col 3
+      (frustrum.right + frustrum.left) / (frustrum.right - frustrum.left),
+      (frustrum.top + frustrum.bottom) / (frustrum.top - frustrum.bottom),
+      -1 * (frustrum.far + frustrum.near) / (frustrum.far - frustrum.near),
+      -1,
+      // col 4
+      0,
+      0,
+      -1 * (2.0 * frustrum.far * frustrum.near) / (frustrum.far - frustrum.near),
+      0
     ]);
   }
 }
@@ -254,11 +278,20 @@ function getRotatedCube(phi, theta, psi) {
   ];
 }
 
+// const frustrum = {
+//   left: -300,
+//   right: 300,
+//   bottom: -300,
+//   top: 300,
+//   near: -300,
+//   far: 300
+// };
+
 const frustrum = {
-  left: -300,
-  right: 300,
-  bottom: -300,
-  top: 300,
-  near: -300,
-  far: 300
+  left: -1000,
+  right: 1000,
+  bottom: -1000,
+  top: 1000,
+  near: 3,
+  far: 1000
 };

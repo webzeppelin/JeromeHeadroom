@@ -8,7 +8,6 @@ const MOUTH_OPEN_TIME = 250;
 
 export default function* talkingHeadSaga() {
   yield takeLatest(Action.START_HEAD_BACKGROUND_ANIMATION, startHeadBackgroundAnimation);
-  yield takeLatest(Action.STOP_HEAD_BACKGROUND_ANIMATION, stopHeadBackgroundAnimation);
   yield takeLatest(Action.CLOSE_MOUTH, autoCloseMouth);
   yield fork(animateHeadBackground);
 }
@@ -17,9 +16,9 @@ export function* startHeadBackgroundAnimation() {
     yield put(Action.animateHeadBackground((new Date).getTime()));
 }
 
-export function* stopHeadBackgroundAnimation() {
-    yield put(Action.stopHeadBackgroundAnimation());
-}
+// export function* stopHeadBackgroundAnimation() {
+//     yield put(Action.stopHeadBackgroundAnimation());
+// }
 
 export function* animateHeadBackground() {
   console.log("Debug: animateHeadBackground()");
